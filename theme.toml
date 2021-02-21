@@ -1,11 +1,12 @@
-name = "Geekdoc"
+name = "Compose"
 license = "MIT"
-licenselink = "https://github.com/thegeeklab/hugo-geekdoc/blob/master/LICENSE"
-description = "Hugo theme made for documentation"
-homepage = "https://geekdocs.de/"
-tags = ["docs", "documentation", "responsive", "simple"]
-min_version = "0.65.0"
+licenselink = "https://github.com/onweru/compose/blob/master/LICENSE"
+description = "A hugo theme for documentation sites. It's inspired by forestry.io's docs page"
+homepage = "https://docs.neuralvibes.com"
+tags = ["technical", "docs", "dark", "customizable", "search", "documentation"]
+features = ["technical", "docs", "dark", "customizable", "search", "documentation"]
+min_version = "0.76.0"
 
 [author]
-    name = "Robert Kaussow"
-    homepage = "https://thegeeklab.de/"
+  name = "Weru"
+  homepage = "https://github.com/onweru"

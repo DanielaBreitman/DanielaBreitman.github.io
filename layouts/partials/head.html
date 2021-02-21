@@ -1,34 +1,36 @@
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{ partial "title" . }}">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{{- hugo.Generator }}
+{{- $iconsPath := "/favicons/" }}
+<link rel="apple-touch-icon" sizes="180x180" href='{{ absURL (printf "%sapple-touch-icon.png" $iconsPath) }}'>
+<link rel="icon" type="image/png" sizes="32x32" href='{{ absURL (printf "%sfavicon-32x32.png" $iconsPath) }}'>
+<link rel="icon" type="image/png" sizes="16x16" href='{{ absURL (printf "%sfavicon-16x16.png" $iconsPath) }}'>
+<link rel="manifest" href='{{ absURL (printf "%ssite.webmanifest" $iconsPath) }}'>
+<link rel="mask-icon" href='{{ absURL (printf "%ssafari-pinned-tab.svg" $iconsPath) }}'  color="#004750">
+<link rel="shortcut icon" href='{{ absURL (printf "%sfavicon.ico" $iconsPath) }}'>
+<meta name="msapplication-config" content='{{ absURL (printf "%sbrowserconfig.xml" $iconsPath) }}'>
+{{- $t := .Title }}
+{{- $s := .Site.Title }}
+{{- if in (lower $s) (lower $t) }}
+  {{- $t = false }}
+{{- end }}
+<title>{{ if and $t (ne (trim (lower $s) "") (trim (lower $t) "")) }}{{ $t }} | {{ end }}{{ $s }}</title>
 
-<title>{{ partial "title" . }} | {{ .Site.Title -}}</title>
+{{- partial "opengraph" . }}
 
-<link rel="icon" href="{{ "favicon/favicon-32x32.png" | relURL }}" type="image/x-icon">
+{{- $options := (dict "targetPath" "css/styles.css" "outputStyle" "compressed" "enableSourceMap" "true") -}}
+{{- $styles := resources.Get "sass/main.sass" | resources.ExecuteAsTemplate "main.sass" . | resources.ToCSS $options | resources.Fingerprint "sha512" }}
+<link rel="stylesheet" href="{{ $styles.Permalink }}" integrity="{{ $styles.Data.Integrity }}">
 
-<link rel="preload" as="font" href="{{ "fonts/Metropolis.woff2" | relURL }}" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" as="font" href="{{ "fonts/LiberationSans.woff2" | relURL }}" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" as="font" href="{{ "fonts/LiberationSans-Bold.woff2" | relURL }}" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" as="font" href="{{ "fonts/LiberationSans-BoldItalic.woff2" | relURL }}" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" as="font" href="{{ "fonts/LiberationSans-Italic.woff2" | relURL }}" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" as="font" href="{{ "fonts/LiberationMono.woff2" | relURL }}" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" as="font" href="{{ "fonts/DroidSans.woff2" | relURL }}" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" as="font" href="{{ "fonts/GeekdocIcons.woff2" | relURL }}" type="font/woff2" crossorigin="anonymous">
+{{- $sp := .Site.Params }}
+{{ with $sp.metaThemeColor }}
+  <meta name="theme-color" content="{{.}}">
+{{ end }}
 
-<link rel="preload" href="{{ index .Site.Data.assets "main.min.css" | relURL }}" as="style">
-<link rel="stylesheet" href="{{ index .Site.Data.assets "main.min.css" | relURL }}" media="all">
-
-<link rel="preload" href="{{ index .Site.Data.assets "mobile.min.css" | relURL }}" as="style">
-<link rel="stylesheet" href="{{ index .Site.Data.assets "mobile.min.css" | relURL }}" media="screen and (max-width: 45rem)">
-
-<link rel="preload" href="{{ index .Site.Data.assets "print.min.css" | relURL }}" as="style">
-<link rel="stylesheet" href="{{ index .Site.Data.assets "print.min.css" | relURL }}" media="print">
-
-<link rel="preload" href="{{ index .Site.Data.assets "custom.css" | relURL }}" as="style">
-<link rel="stylesheet" href="{{ index .Site.Data.assets "custom.css" | relURL }}" media="all">
-
-{{ with .OutputFormats.Get "rss" -}}
-    {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
-{{ end -}}
-
-{{ printf "<!-- %s -->" "Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc" | safeHTML }}
+{{ if .Description }}
+  <meta name="description" content="{{ .Description }}">
+{{ else if .IsPage }}
+  <meta name="description" content="{{ .Summary | plainify }}">
+{{ else if .Site.Params.Description }}
+  <meta name="descripion" content="{{.Site.Params.Description }}">
+{{ end }}

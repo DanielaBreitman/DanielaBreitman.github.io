@@ -1,31 +1,35 @@
-<!DOCTYPE html>
-<html lang="{{ .Site.Language.Lang }}">
-
+<!doctype html>
+<html lang="{{ .Site.Language.Lang }}"{{ with .Site.Params.enableDarkMode }} class="dark"{{ end }}>
 <head>
-    {{ partial "head" . }}
+  {{- partial "head" . }}
 </head>
-
-<body>
-    {{ partial "svg-icon-symbols" . }}
-
-    <div class="wrapper">
-        <input type="checkbox" class="hidden" id="menu-control" />
-        {{ partial "site-header" (dict "Root" . "MenuEnabled" true) }}
-
-        <main class="container flex flex-even">
-            <aside class="gdoc-nav">
-                {{ partial "menu" . }}
-            </aside>
-
-            <div class="gdoc-page">
-                {{ template "main" . }}
-                {{ partial "page-footer" . }}
-            </div>
-        </main>
-
-        {{ partial "site-footer" . }}
-    </div>
-
-    {{ partial "foot" . }}
+  {{- $s := .Site.Params }}
+  {{- $p := .Params }}
+  {{- $maxCodeLines := default 100 $s.codeMaxLines }}
+  {{- with $p.codeMaxLines }}
+    {{- $maxCodeLines = . }}
+  {{- end }}
+  {{- $codeLineNumbers := default false $s.codeLineNumbers }}
+  {{ with $p.codeLineNumbers }}
+    {{- $codeLineNumbers = . }}
+  {{ else }}
+    {{ if eq $p.codeLineNumbers false }}
+      {{- $codeLineNumbers = false }}
+    {{ end }}
+  {{ end }}
+<body class="page-{{ .Kind }}"data-code="{{ $maxCodeLines }}" data-lines="{{ $codeLineNumbers }}" >
+  <header class="nav_header">
+    {{- partial "nav" . }}
+  </header>
+  <div class="main wrap pt-4">
+    {{- if eq .Section "docs" }}
+    {{- partial "document" . }}
+    {{- else }}
+    {{- block "main" . }}{{ end }}
+    {{- end }}
+  </div>
+  {{- partial "footer" . }}
+  {{- partial "sprites" . }}
+  {{- partial "scripts" . }}
 </body>
 </html>

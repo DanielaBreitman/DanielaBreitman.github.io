@@ -1,145 +1,205 @@
-'use strict';
-
-{{ $searchDataFile := printf "%s.search-data.json" .Language.Lang }}
-{{ $searchData := resources.Get "search-data.json" | resources.ExecuteAsTemplate $searchDataFile . | resources.Minify }}
-
-(function() {
-  const input = document.querySelector('#gdoc-search-input');
-  const results = document.querySelector('#gdoc-search-results');
-  let showParent = {{ if .Site.Params.GeekdocSearchShowParent }}true{{ else }}false{{ end }}
-
-  input.addEventListener('focus', init);
-  input.addEventListener('keyup', search);
-
-  function init() {
-    input.removeEventListener('focus', init); // init once
-
-    loadScript('{{ index .Site.Data.assets "js/groupBy.min.js" | relURL }}');
-    loadScript('{{ index .Site.Data.assets "js/flexsearch.min.js" | relURL }}', function() {
-      const indexCfg = {{ with .Scratch.Get "geekdocSearchConfig" }}{{ . | jsonify}}{{ else }}{}{{ end }};
-      const dataUrl = "{{ $searchData.RelPermalink }}"
-
-      indexCfg.doc = {
-        id: 'id',
-        field: ['title', 'content'],
-        store: ['title', 'href', 'parent'],
-      };
-
-      const index = FlexSearch.create(indexCfg);
-      window.geekdocSearchIndex = index;
-
-      getJson(dataUrl, function(data) {
-        data.forEach(obj => {
-          window.geekdocSearchIndex.add(obj);
-        });
-      });
-    });
+function initializeSearch(index) {
+  const searchKeys = ['title', 'link', 'body', 'id'];
+  
+  const searchPageElement = elem('#searchpage');
+  
+  const searchOptions = {
+    ignoreLocation: true,
+    findAllMatches: true,
+    includeScore: true,
+    shouldSort: true,
+    keys: searchKeys,
+    threshold: 0.0
+  };
+  
+  index = new Fuse(index, searchOptions);
+  
+  function minQueryLen(query) {
+    query = query.trim();
+    const queryIsFloat = parseFloat(query);
+    const minimumQueryLength = queryIsFloat ? 1 : 2;
+    return minimumQueryLength;
   }
-
-  function search() {
-    while (results.firstChild) {
-      results.removeChild(results.firstChild);
+  
+  function searchResults(results=[], query="", passive = false) {
+    let resultsFragment = new DocumentFragment();
+    let showResults = elem('.search_results');
+    if(passive) {
+      showResults = searchPageElement;
     }
-
-    if (!input.value) {
-      return results.classList.remove("has-hits");
+    emptyEl(showResults);
+  
+    const queryLen = query.length;
+    const requiredQueryLen = minQueryLen(query);
+  
+    if(results.length && queryLen >= requiredQueryLen) {
+      let resultsTitle = createEl('h3');
+      resultsTitle.className = 'search_title';
+      resultsTitle.innerText = quickLinks;
+      if(passive) {
+        resultsTitle.innerText = searchResultsLabel;
+      }
+      resultsFragment.appendChild(resultsTitle);
+      if(!searchPageElement) {
+        results = results.slice(0,8);
+      } else {
+        results = results.slice(0,12);
+      }
+      results.forEach(function(result){
+        let item = createEl('a');
+        item.href = `${result.link}?query=${query}`;
+        item.className = 'search_result';
+        item.style.order = result.score;
+        if(passive) {
+          pushClass(item, 'passive');
+          let itemTitle = createEl('h3');
+          itemTitle.textContent = result.title;
+          item.appendChild(itemTitle);
+  
+          let itemDescription = createEl('p');
+          // position of first search term instance
+          let queryInstance = result.body.indexOf(query);
+          itemDescription.textContent = `... ${result.body.substring(queryInstance, queryInstance + 200)} ...`;
+          item.appendChild(itemDescription);
+        } else {
+          item.textContent = result.title;
+        }
+        resultsFragment.appendChild(item);
+      });
     }
-
-    let searchHits = window.geekdocSearchIndex.search(input.value, 10);
-    if (searchHits.length < 1) {
-      return results.classList.remove("has-hits");
-    }
-
-    results.classList.add("has-hits");
-
-    if (showParent === true) {
-      searchHits = groupBy(searchHits, hit => hit.parent);
-    }
-
-    const items = [];
-
-    if (showParent === true) {
-      for (const section in searchHits) {
-        const item = document.createElement('li'),
-              title = item.appendChild(document.createElement('span')),
-              subList = item.appendChild(document.createElement('ul'));
-
-        title.textContent = section;
-        createLinks(searchHits[section], subList);
-
-        items.push(item);
+  
+    if(queryLen >= requiredQueryLen) {
+      if (!results.length) {
+        showResults.innerHTML = `<span class="search_result">${noMatchesFound}</span>`;
       }
     } else {
-      const item = document.createElement('li'),
-            title = item.appendChild(document.createElement('span')),
-            subList = item.appendChild(document.createElement('ul'));
-
-      title.textContent = "Results";
-      createLinks(searchHits, subList);
-
-      items.push(item);
-    }
-
-    items.forEach(item => {
-      results.appendChild(item);
-    })
-  }
-
-  /**
-   * Creates links to given pages and either returns them in an array or attaches them to a target element
-   * @param {Object} pages Page to which the link should point to
-   * @param {HTMLElement} target Element to which the links should be attatched
-   * @returns {Array} If target is not specified, returns an array of built links
-   */
-  function createLinks(pages, target) {
-    const items = [];
-
-    for (const page of pages) {
-      const item = document.createElement("li"),
-            entry = item.appendChild(document.createElement("span")),
-            a = entry.appendChild(document.createElement("a"));
-
-      entry.classList.add("flex")
-
-      a.href = page.href;
-      a.textContent = page.title;
-      a.classList.add("gdoc-search__entry")
-
-      if (target) {
-        target.appendChild(item);
-        continue
+      if (queryLen > 1) {
+        showResults.innerHTML = `<label for="find" class="search_result">${shortSearchQuery}</label>`;
+      } else {
+        showResults.innerHTML = `<label for="find" class="search_result">${typeToSearch}</label>`;
       }
-
-      items.push(item);
     }
-
-    return items;
+  
+    showResults.appendChild(resultsFragment);
   }
-
-  function fetchErrors(response) {
-    if (!response.ok) {
-        throw Error(response.statusText);
+  
+  function search(searchTerm, passive = false) {
+    if(searchTerm.length) {
+      let rawResults = index.search(searchTerm);
+      rawResults = rawResults.map(function(result){
+        const score = result.score;
+        const resultItem = result.item;
+        resultItem.score = (parseFloat(score) * 50).toFixed(0);
+        return resultItem;
+      });
+  
+      passive ? searchResults(rawResults, searchTerm, true) : searchResults(rawResults, searchTerm);
+  
+    } else {
+      passive ? searchResults([], "", true) : searchResults();
     }
-    return response;
   }
-
-  function getJson(src, callback) {
-    fetch(src)
-    .then(fetchErrors)
-    .then(response => response.json())
-    .then(json => callback(json))
-    .catch(function(error) {
-      console.log(error);
+  
+  function liveSearch() {
+    const searchField = elem('.search_field');
+  
+    if (searchField) {
+      searchField.addEventListener('input', function() {
+        const searchTerm = searchField.value.trim().toLowerCase();
+        search(searchTerm);
+      });
+  
+      if(!searchPageElement) {
+        searchField.addEventListener('search', function(){
+          const searchTerm = searchField.value.trim().toLowerCase();
+          if(searchTerm.length)  {
+            window.location.href = new URL(`search/?query=${searchTerm}`, rootURL).href;
+          }
+        });
+      }
+    }
+  }
+  
+  function findQuery(query = 'query') {
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.has(query)){
+      let c = urlParams.get(query);
+      return c;
+    }
+    return "";
+  }
+  
+  function passiveSearch() {
+    if(searchPageElement) {
+      const searchTerm = findQuery();
+      search(searchTerm, true);
+  
+      // search actively after search page has loaded
+      const searchField = elem('.search_field');
+  
+      if(searchField) {
+        searchField.addEventListener('input', function() {
+          const searchTerm = searchField.value.trim().toLowerCase();
+          search(searchTerm, true);
+          wrapText(searchTerm, main);
+        });
+      }
+    }
+  }
+  
+  function hasSearchResults() {
+    const searchResults = elem('.results');
+    const body = searchResults.innerHTML.length;
+    return [searchResults, body]
+  }
+  
+  function clearSearchResults() {
+    let searchResults = hasSearchResults();
+    let actionable = searchResults[1];
+    if(actionable) {
+      searchResults = searchResults[0];
+      searchResults.innerHTML = "";
+      // clear search field
+      const searchField = elem('.search_field');
+      searchField.value = "";
+    }
+  }
+  
+  function onEscape(fn){
+    window.addEventListener('keydown', function(event){
+      if(event.code === "Escape") {
+        fn();
+      }
     });
   }
-
-  function loadScript(src, callback) {
-    let script = document.createElement('script');
-    script.defer = true;
-    script.async = false;
-    script.src = src;
-    script.onload = callback;
-
-    document.body.appendChild(script);
+  
+  let main = elem('main');
+  if(!main) {
+    main = elem('.main');
   }
-})();
+
+  searchPageElement ? false : liveSearch();
+  passiveSearch();
+
+  wrapText(findQuery(), main);
+
+  onEscape(clearSearchResults);
+  
+  window.addEventListener('click', function(event){
+    const target = event.target;
+    const isSearch = target.closest('.search') || target.matches('.search');
+    if(!isSearch && !searchPageElement) {
+      clearSearchResults();
+    }
+  });
+}
+
+window.addEventListener('load', function() { 
+  fetch(`${rootURL}index.json`)
+  .then(response => response.json())
+  .then(function(data) {
+    data = data.length ? data : [];
+    initializeSearch(data);
+  })
+  .catch((error) => console.error(error));
+});
