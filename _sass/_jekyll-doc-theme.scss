@@ -23,7 +23,7 @@ html {
     color: #fff;
   
     h1 {
-      color: black;
+      color: $gray-lighter;
     }
     // background-attachment: fixed;
     background-size: cover;
@@ -41,8 +41,8 @@ html {
     bottom: 0;
     width: 100%;    
     padding-top: 10px;
-    background-color: $gray-lighter;
-    color: $gray-dark;
+    background-color: $gray-dark;
+    color: $gray-light;
   }
   
   .post-list-container {
