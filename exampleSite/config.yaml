@@ -1,6 +1,6 @@
 ---
-baseURL: https://geekdocs.de/
-title: Geekdocs
+baseURL: https://danielabreitman.github.io/
+title: Daniela Breitman
 theme: hugo-geekdoc
 pygmentsUseClasses: true
 pygmentsCodeFences: true
