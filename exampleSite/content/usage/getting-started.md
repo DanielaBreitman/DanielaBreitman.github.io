@@ -18,5 +18,3 @@ weight: -20
 
 - [Characterising the Sensitivity of the CHIME/FRB System Using Pulsars](https://github.com/DanielaBreitman/DanielaBreitman.github.io/blob/master/Files/PHYS_396___Final_Report.pdf), research course at McGill during Winter 2019 semester.
 
-
--
