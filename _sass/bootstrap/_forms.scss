@@ -135,7 +135,7 @@ output {
   // Unstyle the caret on `<select>`s in IE10+.
   &::-ms-expand {
     border: 0;
-    background-color: transparent;
+    background-color: black;
   }
 
   // Disabled and read-only inputs
