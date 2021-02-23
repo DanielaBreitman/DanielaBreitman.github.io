@@ -2,7 +2,7 @@
 title: Articles
 permalink: /docs/articles/
 ---
-#Select Articles
+# Select Articles
 
 - [Discovery of Neptune](https://earthsky.org/human-world/today-in-science-discovery-of-neptune)
 - [First American Woman in Space - Sally Ride](https://earthsky.org/space/sally-ride-1st-american-woman-in-space-june-18-1983)
