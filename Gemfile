@@ -5,6 +5,7 @@ ruby RUBY_VERSION
 
 # to use GitHub Pages
 gem "github-pages", group: :jekyll_plugins
+gem 'jekyll-seo-tag'
 
 # If you have any plugins, put them here!
 # group :jekyll_plugins do

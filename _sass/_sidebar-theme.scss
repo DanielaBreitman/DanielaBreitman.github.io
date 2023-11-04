@@ -1,0 +1,143 @@
+#wrapper {
+    padding-left: 250px;
+    transition: all 0.4s ease 0s;
+  }
+  
+#sidebar-wrapper {
+    margin-left: -250px;
+    left: 250px;
+    width: 250px;
+    background: #2b3e50;
+    position: fixed;
+    height: 100%;
+    overflow-y: auto;
+    z-index: 1000;
+    transition: all 0.4s ease 0s;
+  }
+  
+#page-content-wrapper {
+    width: 100%;
+  }
+  
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+  @media (max-width:767px) {
+  
+      #wrapper {
+        padding-left: 0;
+      }
+  
+      #sidebar-wrapper {
+        left: 0;
+      }
+  
+      #wrapper.active {
+        position: relative;
+        left: 250px;
+      }
+  
+      #wrapper.active #sidebar-wrapper {
+        left: 250px;
+        width: 250px;
+        transition: all 0.4s ease 0s;
+      }
+  
+  }
+
+
+.dropdown-toggle a:link, a:hover, a:focus {
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+#sidebar-wrapper .sidebar-header {
+    padding: 20px;
+    background: #6d7fcc;
+}
+
+#sidebar-wrapper ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
+#sidebar-wrapper ul p {
+    color: #fff;
+    padding: 10px;
+    font-size: 1.3em;
+    font-weight: 300;
+    line-height: 1.7em;
+}
+
+#sidebar-wrapper ul li a {
+    padding: 10px;
+    font-size: 1.3em;
+    display: block;
+}
+#sidebar-wrapper ul li a:hover {
+    color: #0a4a85;
+    background: #fff;
+}
+
+#sidebar-wrapper body {
+  font-family: 'Poppins', sans-serif;
+}
+
+#sidebar-wrapper ul li.active > a, a[aria-expanded="true"] {
+    color: #fff;
+    background: #0a4a85;
+}
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #0a4a85;
+}
+
+
+#sidebar {
+    /* don't forget to add all the previously mentioned styles here too */
+    background: #7386D5;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #6d7fcc;
+}
+
+.overrider #sidebar-wrapper a, a:hover, a:focus {
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.menu-item:active{
+  background:#0a4a85;
+}
+
+.menu-item:hover{
+  color: #fff;
+  background: #0a4a85;
+}
