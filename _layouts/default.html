@@ -9,10 +9,17 @@
 
     <div class="page-content">
         <div class="wrapper">
+            <div class="header-container jumbotron">
+                <div class="container">
+                    <h1>Welcome to Dani's Space</h1>
+                    <p> Let me tell you what I've been up to...</p>
+                </div>
+            </div>
+            {% include left.html %}
             {{ content }}
         </div>
     </div>
-
+    
     {% include footer.html %}
     {% include js_files.html %}
 </body>
