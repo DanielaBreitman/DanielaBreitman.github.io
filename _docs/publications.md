@@ -7,7 +7,7 @@ permalink: /docs/publications/
 
 ### Doctoral
 
-- Breitman, D, et al. *21cmEMUv3: a hybrid diffusion-LSTM emulator of 21cmFAST summary observables*, 2026 [paper here](https://arxiv.org/abs/2606.00219){:target="_blank" rel="noopener noreferrer"}
+- Breitman, D, et al. *21cmEMUv3: a hybrid diffusion-LSTM emulator of 21cmFAST summary observables*, 2026 [paper here](https://arxiv.org/abs/2606.00219){:target="_blank" rel="noopener noreferrer"} — accepted at the [ICML 2026 AI for Physics workshop](https://openreview.net/forum?id=oAe1wRN76R){:target="_blank" rel="noopener noreferrer"}
 
 - Breitman, D, et al. *Sample Variance Denoising in Cylindrical 21-cm Power Spectra*, 2025 [paper here](https://arxiv.org/abs/2507.12545){:target="_blank" rel="noopener noreferrer"}
 
