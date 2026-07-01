@@ -2,7 +2,11 @@
     padding-left: 250px;
     transition: all 0.4s ease 0s;
   }
-  
+
+.page-content {
+    padding-left: 250px;
+  }
+
 #sidebar-wrapper {
     margin-left: -250px;
     left: 250px;
@@ -41,26 +45,50 @@ a[data-toggle="collapse"] {
 }
 
   @media (max-width:767px) {
-  
-      #wrapper {
+
+      .page-content {
         padding-left: 0;
       }
-  
+
+      /* Sidebar becomes a horizontal nav bar below the banner */
       #sidebar-wrapper {
         left: 0;
+        margin-left: 0;
+        width: 100%;
+        position: static;
+        height: auto;
+        overflow: visible;
+        min-height: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 0 8px;
       }
-  
-      #wrapper.active {
-        position: relative;
-        left: 250px;
+
+      #sidebar-wrapper ul.components {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 0;
+        border-bottom: none;
       }
-  
-      #wrapper.active #sidebar-wrapper {
-        left: 250px;
-        width: 250px;
-        transition: all 0.4s ease 0s;
+
+      #sidebar-wrapper ul.components .menu-item a {
+        padding: 8px 12px;
+        font-size: 1em;
       }
-  
+
+      #sidebar-wrapper .sidebar-social {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 4px 4px;
+        margin: 0;
+      }
+
   }
 
 
@@ -102,6 +130,33 @@ a[data-toggle="collapse"] {
 
 #sidebar-wrapper body {
   font-family: 'Poppins', sans-serif;
+}
+
+#sidebar-wrapper .sidebar-social {
+  padding: 0 12px 20px;
+  margin: 0;
+  list-style: none;
+}
+
+#sidebar-wrapper .sidebar-social li {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#sidebar-wrapper .sidebar-social li a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff !important;
+  font-size: 20px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+#sidebar-wrapper .sidebar-social li a:hover {
+  color: #ccc !important;
+  background: transparent;
 }
 
 #sidebar-wrapper ul li.active > a, a[aria-expanded="true"] {

@@ -21,6 +21,9 @@ html {
     background-color: black;
     background: url('../img/bg.jpg') no-repeat 50% 0;
     color: #fff;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 0;
   
     h1 {
       color: $gray-lighter;
@@ -28,7 +31,12 @@ html {
     // background-attachment: fixed;
     background-size: cover;
     background-position: center 36%;
-    margin-top: -37px;
+
+    @media (max-width: 767px) {
+      padding-top: 30px;
+      padding-bottom: 30px;
+      min-height: 110px;
+    }
   }
   .navbar-container {
     font-size: 16px;
@@ -59,4 +67,20 @@ html {
   }
   .navbar-form .has-feedback .form-control-feedback{
     top:10px
+  }
+
+  #search-box.form-control {
+    background-color: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.25);
+    color: #fff;
+
+    &::placeholder {
+      color: rgba(255,255,255,0.55);
+    }
+    &:focus {
+      background-color: rgba(255,255,255,0.18);
+      border-color: rgba(255,255,255,0.5);
+      box-shadow: none;
+      color: #fff;
+    }
   }
