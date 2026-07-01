@@ -9,7 +9,7 @@ permalink: /docs/publications/
 
 - Breitman, D, et al. *21cmEMUv3: a hybrid diffusion-LSTM emulator of 21cmFAST summary observables*, 2026 [paper here](https://arxiv.org/abs/2606.00219){:target="_blank" rel="noopener noreferrer"}
 
-- Breitman, D, et al. *Sample Variance Denoising in Cylindrical 21-cm Power Spectra*, 2026 [paper here](https://arxiv.org/abs/2507.12545){:target="_blank" rel="noopener noreferrer"}
+- Breitman, D, et al. *Sample Variance Denoising in Cylindrical 21-cm Power Spectra*, 2025 [paper here](https://arxiv.org/abs/2507.12545){:target="_blank" rel="noopener noreferrer"}
 
 - Breitman, D, et al. *21cmEMU: an emulator of 21cmFAST summary observables*, 2023 [paper here](https://arxiv.org/abs/2309.05697.pdf){:target="_blank" rel="noopener noreferrer"}
 
