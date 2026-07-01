@@ -7,9 +7,11 @@ permalink: /docs/publications/
 
 ### Doctoral
 
-- Breitman, D, et al. *21cmEMU: an emulator of 21cmFAST summary observables*, [MNRAS](https://arxiv.org/pdf/2309.05697.pdf){:target="_blank" rel="noopener noreferrer"}, 2023
+- Breitman, D, et al. *21cmEMUv3: a hybrid diffusion-LSTM emulator of 21cmFAST summary observables*, [A&A](https://arxiv.org/abs/2606.00219){:target="_blank" rel="noopener noreferrer"}, 2026
 
-- D. Michilli, K. W. Masui, R. Mckinven, D. Cubranic, M. Bruneault, C. Brar, C. Patel, P. J. Boyle, I. H. Stairs, A. Renard, K. Bandura, S. Berger, and D. Breitman et al. *An analysis pipeline for CHIME/FRB full-array baseband data*, [arXiv](https://arxiv.org/abs/2010.06748){:target="_blank" rel="noopener noreferrer"}, 2020
+- Breitman, D, et al. *Sample Variance Denoising in Cylindrical 21-cm Power Spectra*, [A&A] (https://arxiv.org/abs/2507.12545){:target="_blank" rel="noopener noreferrer"}, 2025
+
+- Breitman, D, et al. *21cmEMU: an emulator of 21cmFAST summary observables*, [MNRAS](https://arxiv.org/abs/2309.05697.pdf){:target="_blank" rel="noopener noreferrer"}, 2023
 
 ### Master's
 
